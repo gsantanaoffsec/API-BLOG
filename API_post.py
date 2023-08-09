@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from estrutura_db import Autor, Postagem, app, db
 from functools import wraps
 import jwt
+import os
 
 
 def token_obrigatorio(f):
@@ -211,5 +212,5 @@ def excluir_autor(autor, id_autor):
 
     return jsonify({'mensagem': 'Autor excluído com sucesso!'})
 
-
-app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True, port=os.getenv('PORT', default=5000))
