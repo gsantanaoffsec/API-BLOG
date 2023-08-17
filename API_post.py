@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request, make_response
 from datetime import datetime, timedelta
-from estrutura_db import Autor, Postagem, app, db
+from estrutura_db import Autor, Postagem, criar_novo_autor, app, db
 from functools import wraps
 import jwt
 import os
@@ -34,16 +34,10 @@ def cadastro():
         return jsonify({'mensagem': 'Campos obrigatórios não fornecidos.'}, 400)
     if Autor.query.filter_by(email=novo_usuario['email']).first():
         return jsonify({'mensagem': 'Este email já está em uso.'}, 400)
-    autor = Autor(
-        nome=novo_usuario['nome'],
-        email=novo_usuario['email'],
-        senha=novo_usuario['senha'],
-        admin=False
-    )
-    db.session.add(autor)
-    db.session.commit()
-
-    return jsonify({'mensagem': 'Usuário criado com sucesso!'}, 200)
+    
+    criar_novo_autor(novo_usuario['nome'], novo_usuario['email'], novo_usuario['senha'])
+    
+    return jsonify({'mensagem': 'Usuário criado com sucesso!'}), 201
 
 
 @app.route('/login')

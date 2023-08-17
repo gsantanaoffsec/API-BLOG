@@ -57,3 +57,4 @@ def criar_novo_autor(nome, email, senha, admin=False):
 
 if __name__ == '__main__':
     inicializar_banco()
+    criar_novo_autor()
