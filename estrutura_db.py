@@ -47,5 +47,13 @@ def inicializar_banco():
         db.session.commit()
 
 
+def criar_novo_autor(nome, email, senha, admin=False):
+    with app.app_context():
+        novo_autor = Autor(nome=nome, email=email, senha=senha, admin=admin)
+        db.session.add(novo_autor)
+        db.session.commit()
+        print(f"Autor {nome} criado com sucesso!")
+
+
 if __name__ == '__main__':
     inicializar_banco()

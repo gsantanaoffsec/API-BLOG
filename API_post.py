@@ -27,6 +27,25 @@ def token_obrigatorio(f):
     return decorated
 
 
+@app.route('/cadastro', methods=['POST'])
+def cadastro():
+    novo_usuario = request.get_json()
+    if 'nome' not in novo_usuario or 'email' not in novo_usuario or 'senha' not in novo_usuario:
+        return jsonify({'mensagem': 'Campos obrigatórios não fornecidos.'}, 400)
+    if Autor.query.filter_by(email=novo_usuario['email']).first():
+        return jsonify({'mensagem': 'Este email já está em uso.'}, 400)
+    autor = Autor(
+        nome=novo_usuario['nome'],
+        email=novo_usuario['email'],
+        senha=novo_usuario['senha'],
+        admin=False
+    )
+    db.session.add(autor)
+    db.session.commit()
+
+    return jsonify({'mensagem': 'Usuário criado com sucesso!'}, 200)
+
+
 @app.route('/login')
 def login():
     auth = request.authorization
